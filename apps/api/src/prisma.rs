@@ -2,7 +2,7 @@
 
 pub static DATAMODEL_STR: &'static str =
     include_str!("D:\\dev\\misc\\portfolio\\rspc-nextjs\\apps\\api\\prisma\\schema.prisma");
-static DATABASE_STR: &'static str = "mysql";
+static DATABASE_STR: &'static str = "postgresql";
 use ::prisma_client_rust::migrations::include_dir;
 pub static MIGRATIONS_DIR: &::prisma_client_rust::migrations::include_dir::Dir = &::prisma_client_rust::migrations::include_dir::include_dir!(
     "D:\\dev\\misc\\portfolio\\rspc-nextjs\\apps\\api\\prisma\\migrations"
