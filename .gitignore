@@ -29,7 +29,7 @@ coverage
 .tmp
 _docpress
 
-lib
+# lib
 dist
 tsconfig.tsbuildinfo
 
