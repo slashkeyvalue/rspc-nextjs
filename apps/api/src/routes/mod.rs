@@ -40,7 +40,7 @@ pub(crate) fn new() -> PublicRouter {
     PublicRouter::new()
         .config(
             Config::new().export_ts_bindings(
-                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..").join("web/app/api.ts")
+                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..").join("web/utils/bindings.ts")
             )
         )
         // .merge("products.", products::public_route())

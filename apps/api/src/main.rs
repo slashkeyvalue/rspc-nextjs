@@ -26,8 +26,8 @@ fn router(client: Arc<prisma::PrismaClient>) -> axum::Router {
         )
         // .merge(routes::users::webhooks(client.clone()))
         .nest(
-        "/rspc",
-        router
+            "/rspc",
+            router
             .endpoint(move |req: Request| {
                 println!("Client requested operation '{}'", &req.uri().path());
                 let token = req.headers().get(AUTHORIZATION).cloned();
@@ -37,7 +37,7 @@ fn router(client: Arc<prisma::PrismaClient>) -> axum::Router {
             .axum()
         )
         .layer(
-        CorsLayer::new()
+            CorsLayer::new()
             .allow_credentials(true)
             .allow_headers([AUTHORIZATION, CONTENT_TYPE, ACCEPT])
             .allow_methods([Method::GET, Method::POST])
