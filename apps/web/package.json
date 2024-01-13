@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "@rspc/client": "^0.1.3",
+    "@rspc/react": "^0.1.3",
+    "@tanstack/react-query": "^5.17.10",
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
