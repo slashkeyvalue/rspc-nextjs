@@ -1,8 +1,11 @@
+'use client';
+
 import Image from "next/image";
 import { Card } from "@repo/ui/card";
 import { Code } from "@repo/ui/code";
 import styles from "./page.module.css";
 import { Button } from "@repo/ui/button";
+import { rspc } from "../src/lib/rspc";
 
 function Gradient({
         conic,
@@ -52,6 +55,9 @@ const LINKS = [
 ];
 
 export default function Page(): JSX.Element {
+
+    const { data: userId } = rspc.useQuery([ 'users.get' ]);
+
     return (
         <main className={styles.main}>
             <div className={styles.description}>
@@ -65,7 +71,7 @@ export default function Page(): JSX.Element {
                         rel="noopener noreferrer"
                         target="_blank"
                     >
-                        By{" "}
+                        By{" "} userId={ userId }
                         <Image
                             alt="Vercel Logo"
                             className={styles.vercelLogo}
