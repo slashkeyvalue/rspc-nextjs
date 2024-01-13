@@ -9,7 +9,7 @@ use std::path::PathBuf;
 
 // mod carts;
 // mod products;
-// pub mod users;
+pub mod users;
 // mod orders;
 // mod reports;
 // mod reviews;
@@ -40,34 +40,38 @@ pub(crate) fn new() -> PublicRouter {
     PublicRouter::new()
         .config(
             Config::new().export_ts_bindings(
-                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..").join("web/utils/bindings.ts")
+                PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..").join("web/src/utils/bindings.ts")
             )
         )
         // .merge("products.", products::public_route())
-        // .middleware(|mw|
-        //     mw.middleware(|mw| async move {
-        //         let old_ctx: Ctx = mw.ctx.clone();
-        //         let role = match get_user(old_ctx.token) {
-        //             Some(Role::Admin(id)) => Role::Admin(id),
-        //             Some(Role::Customer(id)) => Role::Customer(id),
-        //             Some(Role::None) => {
-        //                 return Err(Error::new(ErrorCode::Unauthorized, "Unauthorized".to_string()));
-        //             }
-        //             None => {
-        //                 return Err(Error::new(ErrorCode::Unauthorized, "JWT header not found".to_string()));
-        //             }
-        //         };
+        .middleware(|mw|
+            mw.middleware(|mw| async move {
+                let old_ctx: Ctx = mw.ctx.clone();
 
-        //         Ok(
-        //             mw.with_ctx(PrivateCtx {
-        //                 db: old_ctx.db,
-        //                 role: role.clone(),
-        //                 user_id: role.get_id(),
-        //             })
-        //         )
-        //     })
-        // )
-        // .merge("users.", users::private_route())
+                /*
+                let role = match get_user(old_ctx.token) {
+                    Some(Role::Admin(id)) => Role::Admin(id),
+                    Some(Role::Customer(id)) => Role::Customer(id),
+                    Some(Role::None) => {
+                        return Err(Error::new(ErrorCode::Unauthorized, "Unauthorized".to_string()));
+                    }
+                    None => {
+                        return Err(Error::new(ErrorCode::Unauthorized, "JWT header not found".to_string()));
+                    }
+                };
+                */
+
+                Ok(
+                    mw.with_ctx(PrivateCtx {
+                        db: old_ctx.db,
+                        // role: role.clone(),
+                        // user_id: role.get_id(),
+                        user_id: "adad".to_string(),
+                    })
+                )
+            })
+        )
+        .merge("users.", users::private_route())
         // .merge("carts.", carts::private_route())
         // .merge("orders.", orders::private_route())
         // .merge("reviews.", reviews::private_route())

@@ -67,7 +67,7 @@ async fn main() {
 
     println!( "2" );
 
-    let port = env::var("PORT").unwrap_or("9000".to_string());
+    let port = env::var("PORT").unwrap_or("4000".to_string());
 
     println!( "3" );
 
