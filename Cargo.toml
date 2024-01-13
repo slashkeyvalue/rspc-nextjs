@@ -4,13 +4,13 @@ members = ["apps/api/prisma", "apps/api"]
 default-members = ["apps/api"]
 
 [workspace.dependencies]
-prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust.git", tag = "0.6.11", features = [
-    "postgresql",
+prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust.git", tag = "0.6.10", features = [
+    "sqlite",
     "rspc",
     "migrations",
 ], default-features = false }
-prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust.git", tag = "0.6.11", features = [
-    "postgresql",
+prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust.git", tag = "0.6.10", features = [
+    "sqlite",
     "rspc",
     "migrations",
 ], default-features = false }

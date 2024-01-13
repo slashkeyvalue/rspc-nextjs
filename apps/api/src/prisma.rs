@@ -2,7 +2,7 @@
 
 pub static DATAMODEL_STR: &'static str =
     include_str!("D:\\dev\\misc\\portfolio\\rspc-nextjs\\apps\\api\\prisma\\schema.prisma");
-static DATABASE_STR: &'static str = "postgresql";
+static DATABASE_STR: &'static str = "sqlite";
 use ::prisma_client_rust::migrations::include_dir;
 pub static MIGRATIONS_DIR: &::prisma_client_rust::migrations::include_dir::Dir = &::prisma_client_rust::migrations::include_dir::include_dir!(
     "D:\\dev\\misc\\portfolio\\rspc-nextjs\\apps\\api\\prisma\\migrations"
@@ -342,16 +342,6 @@ pub mod user {
             _params.extend([]);
             Create::new(self.client, _params.into_iter().map(Into::into).collect())
         }
-        pub fn create_many(self, data: Vec<(Vec<SetParam>)>) -> CreateMany<'a> {
-            let data = data
-                .into_iter()
-                .map(|(mut _params)| {
-                    _params.extend([]);
-                    _params
-                })
-                .collect();
-            CreateMany::new(self.client, data)
-        }
         pub fn update(self, _where: UniqueWhereParam, _params: Vec<SetParam>) -> Update<'a> {
             Update::new(self.client, _where.into(), _params, vec![])
         }
@@ -516,21 +506,12 @@ pub mod _prisma {
     }
     #[derive(Debug, Clone, Copy, :: serde :: Serialize, :: serde :: Deserialize, PartialEq, Eq)]
     pub enum TransactionIsolationLevel {
-        #[serde(rename = "ReadUncommitted")]
-        ReadUncommitted,
-        #[serde(rename = "ReadCommitted")]
-        ReadCommitted,
-        #[serde(rename = "RepeatableRead")]
-        RepeatableRead,
         #[serde(rename = "Serializable")]
         Serializable,
     }
     impl ToString for TransactionIsolationLevel {
         fn to_string(&self) -> String {
             match self {
-                Self::ReadUncommitted => "ReadUncommitted".to_string(),
-                Self::ReadCommitted => "ReadCommitted".to_string(),
-                Self::RepeatableRead => "RepeatableRead".to_string(),
                 Self::Serializable => "Serializable".to_string(),
             }
         }

@@ -55,11 +55,15 @@ fn router(client: Arc<prisma::PrismaClient>) -> axum::Router {
 async fn main() {
 
     println!( "0" );
+
     dotenv::dotenv().ok();
 
     println!( "1" );
 
-    let client = Arc::new(prisma::new_client().await.unwrap());
+    let client = match prisma::new_client().await {
+		Ok(client) => client,
+		Err(err) => panic!("Failed to connect to database: {}", err),
+	};
 
     println!( "2" );
 
@@ -75,7 +79,7 @@ async fn main() {
 
     axum::Server
         ::bind(&addr)
-        .serve(router(client).into_make_service())
+        .serve(router(Arc::new(client)).into_make_service())
         .with_graceful_shutdown(utils::axum_shutdown_signal()).await
         .expect("Error with HTTP server!");
 }
