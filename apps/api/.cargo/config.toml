@@ -1,3 +1,2 @@
 [alias]
-prisma = "run -p prisma-cli --"
 dev    = "watch --watch src --why -x run"

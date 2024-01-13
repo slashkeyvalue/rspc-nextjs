@@ -1,6 +1,6 @@
 {
     "name": "api",
     "scripts": {
-        "dev": "cargo run"
+        "dev": "cargo dev"
     }
 }
