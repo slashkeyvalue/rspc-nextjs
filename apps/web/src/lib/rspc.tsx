@@ -5,11 +5,11 @@ import type { Procedures } from "../utils/bindings";
 
 export const client = createClient<Procedures>({
 	transport:
-		typeof window === "undefined"
-		  ? // WebsocketTransport can not be used Server Side, so we provide FetchTransport instead.
+		// typeof window === "undefined"
+		//   ? // WebsocketTransport can not be used Server Side, so we provide FetchTransport instead.
 			// If you do not plan on using Subscriptions you can use FetchTransport on Client Side as well.
 			new FetchTransport("http://localhost:4000/rspc")
-			: new WebsocketTransport("ws://localhost:4000/rspc/ws"),
+			// : new WebsocketTransport("ws://localhost:4000/rspc/ws"),
 });
 
 export const queryClient = new QueryClient({
