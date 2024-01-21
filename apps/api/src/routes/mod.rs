@@ -10,6 +10,7 @@ use std::path::PathBuf;
 // mod carts;
 // mod products;
 pub mod users;
+mod files;
 // mod orders;
 // mod reports;
 // mod reviews;
@@ -17,6 +18,7 @@ pub mod users;
 #[derive(Clone, Debug)]
 pub struct Ctx {
     pub db: Arc<prisma::PrismaClient>,
+    pub bucket: Arc<s3::Bucket>,
     pub token: Option<HeaderValue>,
 }
 
@@ -43,6 +45,7 @@ pub(crate) fn new() -> PublicRouter {
                 PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..").join("web/src/utils/bindings.ts")
             )
         )
+        .merge("files.", files::public_route())
         // .merge("products.", products::public_route())
         .middleware(|mw|
             mw.middleware(|mw| async move {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import styles from './file-uploader.module.css'
 import { useRef, useState } from 'react';
 import { rspc } from '../../../src/lib/rspc';
@@ -12,19 +12,55 @@ type FileUploadFormValues =
 
 export function FileUploader()
 {
-    const { register } = useForm<FileUploadFormValues>();
+    const { register, handleSubmit, setError } = useForm<FileUploadFormValues>();
 
     const [ files, setFiles ] = useState<File[]>([ ]);
 
     const fileInputRef = useRef<HTMLInputElement>( null );
 
-    const { data: userId } = rspc.useQuery([ 'users.get' ]);
+    const { mutate } = rspc.useMutation(
+        [ 'files.upload' ],
+        {
+            retry: false,
+        });
 
-    function handleFileChanged( event: React.ChangeEvent<HTMLInputElement> ): void
+    function onFileChanged( event: React.ChangeEvent<HTMLInputElement> ): void
     {
         const files = Array.from( event.target.files ?? [ ] );
 
         setFiles( files );
+    }
+
+    const onSubmit: SubmitHandler<FileUploadFormValues> = () =>
+    {
+        if ( files.length <= 0 )
+            return setError('file', { message: 'No file found' });
+
+        const file = files[0]!;
+
+        mutate(
+            {
+                file_name: file.name,
+
+                content_type: file.type,
+            },
+            {
+                onSuccess( data )
+                {
+                    fetch( data.signed_url,
+                    {
+                        method: 'PUT',
+
+                        body: file,
+
+                        headers:
+                        {
+                            'Content-Type': file.type,
+                        }
+                    })
+                },
+            }
+        );
     }
 
     return (
@@ -32,13 +68,11 @@ export function FileUploader()
 
             {/* UserId { userId } */}
 
-            <form style={{ flex: 1, display: 'flex' }}>
+            <form className='flex-1 flex' onSubmit={ handleSubmit( onSubmit ) }>
 
-                <input type='file' { ...register( 'file' ) } ref={ fileInputRef } onChange={ handleFileChanged } className={ styles.filterUploaderInput } />
+                <input type='file' { ...register( 'file' ) } ref={ fileInputRef } onChange={ onFileChanged } className={ styles.filterUploaderInput } />
 
-                {/* <input type='submit' /> */}
-
-                <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }} onClick={() => fileInputRef.current?.click() }>
+                <div className='flex-1 flex justify-center items-center' onClick={() => fileInputRef.current?.click() }>
 
                     {
                         files.length <= 0
@@ -49,6 +83,8 @@ export function FileUploader()
                     }
 
                 </div>
+
+                <input type='submit' />
 
             </form>
 
